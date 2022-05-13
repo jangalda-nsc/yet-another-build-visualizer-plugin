@@ -37,7 +37,7 @@ if (options.flattenView) {
       return
     }
 
-    NameNormalizer nameNormalizer = getNameNormalizer(allJobs.toSet())
+    NameNormalizer nameNormalizer = getNameNormalizer(allJobs.toSet(), options.minimum2elements)
 
     allJobs.each { job ->
       drawJobInfo(job, nameNormalizer)
@@ -66,7 +66,7 @@ if (options.flattenView) {
       getJob(data)
     }.toSet()
 
-    NameNormalizer nameNormalizer = getNameNormalizer(jobs)
+    NameNormalizer nameNormalizer = getNameNormalizer(jobs, options.minimum2elements)
 
     matrix.get().each { row ->
       div(style: 'grid-column-start: 1') { }
@@ -87,12 +87,13 @@ private static Job getJob(Object data) {
   return null
 }
 
-private static NameNormalizer getNameNormalizer(Set<Job> jobs) {
+private static NameNormalizer getNameNormalizer(Set<Job> jobs, boolean minimum2elements) {
   return new NameNormalizer(jobs, {
     it.displayName
   }, {
     it instanceof Item ? it.parent : null
-  })
+  },
+  minimum2elements)
 }
 
 private void drawCellData(Object data, NameNormalizer nameNormalizer, BuildFlowOptions options) {

@@ -218,6 +218,7 @@ public class BuildFlowAction implements Action {
     buildFlowOptions.setShowUpstreamBuilds(
         Boolean.parseBoolean(req.getParameter("showUpstreamBuilds")));
     buildFlowOptions.setFlattenView(Boolean.parseBoolean(req.getParameter("flattenView")));
+    buildFlowOptions.setMinimum2elements(Boolean.parseBoolean(req.getParameter("minimum2elements")));
     rsp.setContentType("text/html;charset=UTF-8");
     req.getView(this, "buildFlow.groovy").forward(req, rsp);
   }

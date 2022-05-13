@@ -12,10 +12,16 @@ public class NameNormalizer<T> {
   Set<String> blacklist;
   NameFunction<T> nameFunc;
   ParentFunction<T> parentFunc;
+  boolean minimum2elements;
 
   public NameNormalizer(Set<T> items, NameFunction<T> nameFunc, ParentFunction<T> parentFunc) {
+    this (items, nameFunc, parentFunc, false);
+  }
+
+  public NameNormalizer(Set<T> items, NameFunction<T> nameFunc, ParentFunction<T> parentFunc, boolean atLeast2elements) {
     this.nameFunc = nameFunc;
     this.parentFunc = parentFunc;
+    this.minimum2elements = atLeast2elements;
     blacklist = generateBlacklist(items, nameFunc, parentFunc);
   }
 
@@ -58,6 +64,9 @@ public class NameNormalizer<T> {
     List<String> nameSegments = new ArrayList<>();
     for (; item != null; item = parentFunc.parent(item)) {
       nameSegments.add(0, parentFunc.parent(item) != null ? nameFunc.name(item) : ROOT_NAME);
+      if(this.minimum2elements && nameSegments.size() < 2 && parentFunc.parent(item) != null) {
+        continue;
+      }
       String formattedName = String.join(NAME_SEPARATOR, nameSegments);
       if (!blacklist.contains(formattedName)) {
         return formattedName;

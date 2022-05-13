@@ -87,6 +87,10 @@ var buildFlowOptions = {
   "flattenView": {
     title: "Flatten Graph",
     defaultValue: false
+  },
+  "minimum2elements": {
+      title: "Long names",
+      defaultValue: false
   }
 };
 
